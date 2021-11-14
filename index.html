@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Robot Logo</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    
+    <body>
+        <div id="clipboard"></div>
+
+        <div>
+            <label id="graphics_output_label" for="graphics_output">Graphics Output:</label>
+            <canvas id="graphics_output" width = "550" height = "300"></canvas>
+        </div>
+        
+        <div>
+            <label id="text_output_label" for="text_output">Text Output:</label>
+	        <textarea id="text_output" name="text_output" rows="20" cols="72" readonly="true"></textarea>
+        </div>
+        <div>
+            <label id="command_input_label"for="command_input">Input Commands:</label>
+	        <input type="text" id="command_input" name="command_input" size="72">
+        </div>
+
+        <div>
+	        <label id="edit_label" for="edit_window">Edit Window:</label>
+            <textarea id="edit_window" name="edit_window" rows="20" cols="72"></textarea>
+            <button id="save_edits" type="button">Save</button>
+        </div>
+    	<script src="index18.js"></script>
+  </body>
+</html>

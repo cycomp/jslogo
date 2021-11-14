@@ -1,0 +1,28 @@
+textarea {
+	resize: none;
+	font-family: monospace, monospace;
+	border: 1px solid;
+}
+
+input[type=text] {
+	font-family: monospace, monospace;
+	border: 1px solid;
+}
+
+#edit_label {
+	display: none;
+}
+
+#edit_window {
+	display: none;
+}
+
+#save_edits {
+	display: none;
+}
+
+
+
+canvas {
+	border: 1px solid;
+}
