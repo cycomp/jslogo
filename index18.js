@@ -109,7 +109,7 @@ function Turtle() {
         console.log(bRect);
         if (bufferCanvas === undefined) {
             bufferCanvas = document.createElement('canvas');
-            document.getElementById('clipboard').appendChild(bufferCanvas);
+            //document.getElementById('clipboard').appendChild(bufferCanvas);
         } 
         bufferCanvas.width = bRect[2];
         bufferCanvas.height = bRect[3];
