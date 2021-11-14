@@ -994,40 +994,6 @@ function execute(currentProc) {
         //processInput(inputString)
         let instructionList=currentProc[1][1].toString();
         processInput(instructionList);
-        
-        /*
-        let tokens = [];
-        tokens[0] = "no error";
-        tokens.push(currentProc[1][1]);
-        //turn unary minus sign into negative numbers
-        tokens = mergeMinus(tokens);
-        console.log(tokens);
-        //rearrange infix expressions to prefix notation
-        tokens = infixToPrefix(tokens);
-        console.log(tokens);
-        tokens = tokens.flat(Infinity);
-        console.log(tokens);
-
-        if (tokens === undefined) {
-            tokens = [];
-            tokens[0] = "unmatched brackets"
-        }
-
-        switch (tokens[0]) {
-            case "no error":
-                let currentProc = "";
-                let currentArgs = [];
-                let operatorStack = [];
-                let outputStack = [];
-
-                evaluateTokens(tokens.slice(1));
-                break
-
-            case "unmatched brackets":
-                text_history.push("Error: Unmatched Brackets");
-                updateOutput(text_history, text_output);
-                break
-        }*/
 
     } else {
         let value = jsProceduresMap.get(currentProc[2])
