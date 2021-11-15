@@ -4,13 +4,13 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Robot Logo</title>
+        <title>Logo Interpreter</title>
         <link rel="stylesheet" href="style.css">
     </head>
     
     <body>
         <div id="clipboard"></div>
-
+        <h1>Logo Interpreter</h1>
         <div>
             <label id="graphics_output_label" for="graphics_output">Graphics Output:</label>
             <canvas id="graphics_output" width = "550" height = "300"></canvas>
@@ -30,6 +30,48 @@
             <textarea id="edit_window" name="edit_window" rows="20" cols="72"></textarea>
             <button id="save_edits" type="button">Save</button>
         </div>
-    	<script src="index18.js"></script>
+
+        <div>
+            <h2>Logo Quick Reference</h2>
+            <table border="1">
+                <tr>
+                    <th>Command</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>fd 100</td>
+                    <td>Move forward 100 units</td>
+                </tr>
+                <tr>
+                    <td>rt 90</td>
+                    <td>Rotate 90 degrees</td>
+                </tr>
+                <tr>
+                    <td>make "num 42</td>
+                    <td>Assign the value 42 to the variable num</td>
+                </tr>
+                <tr>
+                    <td>print :num</td>
+                    <td>Output the value of the variable num</td>
+                </tr>
+                <tr>
+                    <td>make "i :i+1</td>
+                    <td>Increment the value of the variable i</td>
+                </tr>
+                <tr>
+                    <td>if :age<50 [print [You are young!]]  </td>
+                    <td>Conditional statement</td>
+                </tr>
+                <tr>
+                    <td>for "i 0 10 [print :i]</td>
+                    <td>For loop, will count from 0 to 10 inclusive</td>
+                </tr>
+                <tr>
+                    <td>edall</td>
+                    <td>Open the edit procedure window</td>
+                </tr>                             
+            </table>
+        </div>
+    	<script src="index19.js"></script>
   </body>
 </html>
