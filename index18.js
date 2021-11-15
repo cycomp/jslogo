@@ -4,6 +4,8 @@ const text_output = document.getElementById("text_output");
 const editLabel = document.getElementById('edit_label');
 const editWindow = document.getElementById('edit_window');
 const saveEdits = document.getElementById("save_edits");
+const graphicsWindow = document.getElementById("graphics_output");
+const graphicsLabel = document.getElementById("graphics_output_label");
 
 const commandInputLabel = document.getElementById('command_input_label');
 const commandInputWindow = document.getElementById('command_input');
@@ -444,6 +446,8 @@ function displayEditWindow(flag) {
         commandInputWindow.style.display = 'none';
         textOutputLabel.style.display = 'none';
         textOutputWindow.style.display = 'none';
+        graphicsWindow.style.display = 'none';
+        graphicsLabel.style.display = 'none';
 
         editLabel.style.display = 'inline-block';
         editWindow.style.display = 'inline-block';
@@ -453,6 +457,8 @@ function displayEditWindow(flag) {
         commandInputWindow.style.display = 'inline-block';
         textOutputLabel.style.display = 'inline-block';
         textOutputWindow.style.display = 'inline-block';
+        graphicsWindow.style.display = 'inline-block';
+        graphicsLabel.style.display = 'inline-block';
 
         editLabel.style.display = 'none';
         editWindow.style.display = 'none';
@@ -888,14 +894,7 @@ function evaluateTokens(tokens) {
             console.log("new procedure definition");
 
 
-            commandInputLabel.style.display = 'none';
-            commandInputWindow.style.display = 'none';
-            textOutputLabel.style.display = 'none';
-            textOutputWindow.style.display = 'none';
-
-            editLabel.style.display = 'inline-block';
-            editWindow.style.display = 'inline-block';
-            saveEdits.style.display = 'inline-block';
+            displayEditWindow(true);
 
             //deal with procedure definitions
 
@@ -994,7 +993,6 @@ function execute(currentProc) {
         //processInput(inputString)
         let instructionList=currentProc[1][1].toString();
         processInput(instructionList);
-
     } else {
         let value = jsProceduresMap.get(currentProc[2])
         let returnValue = value(currentArgs);
