@@ -278,6 +278,15 @@ logoProceduresMap.set("<", [2, null, "<"]);
 logoProceduresMap.set("cs", [0, null, "cs"]);
 logoProceduresMap.set("rt", [1, null, "rt"]);
 logoProceduresMap.set("fd", [1, null, "fd"]);
+logoProceduresMap.set("lt", [1, null, "lt"]);
+logoProceduresMap.set("bk", [1, null, "bk"]);
+
+//aliasses for graphics functions
+logoProceduresMap.set("clearscreen", [0, null, "cs"]);
+logoProceduresMap.set("right", [1, null, "rt"]);
+logoProceduresMap.set("forward", [1, null, "fd"]);
+logoProceduresMap.set("left", [1, null, "lt"]);
+logoProceduresMap.set("back", [1, null, "bk"]);
 
 //control structures if and for
 logoProceduresMap.set("if", [2, null, "if"]);
@@ -294,10 +303,20 @@ jsProceduresMap.set("fd", function(argArray) {
     myTurtle.move(argArray[0]);
 });
 
+jsProceduresMap.set("bk", function(argArray) {
+    console.log(argArray[0])
+    myTurtle.move(-argArray[0]);
+});
 
 jsProceduresMap.set("rt", function(argArray) {
     console.log("rt");
     myTurtle.right(argArray[0]);
+
+});
+
+jsProceduresMap.set("lt", function(argArray) {
+    console.log("lt");
+    myTurtle.right(-argArray[0]);
 
 });
 
@@ -1017,7 +1036,7 @@ function checkVariables(name) {
 }
 
 function checkProcedures(token) {
-    let procedure = logoProceduresMap.get(token);
+    let procedure = logoProceduresMap.get(token.toLowerCase());
     if (procedure !== undefined) {
         let value = JSON.parse(JSON.stringify(procedure));
         return value;
