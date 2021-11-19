@@ -13,13 +13,6 @@ const commandInputWindow = document.getElementById('command_input');
 const textOutputLabel = document.getElementById('text_output_label');
 const textOutputWindow = document.getElementById('text_output');
 
-var turtleHeading = 0;
-var bufferCanvas;
-var transX;
-var transY;
-
-var startTime;
-
 window.addEventListener('beforeunload', function(event) {
     if (editWindow.style["display"] === "inline-block") {
         event.preventDefault();
@@ -30,8 +23,16 @@ window.addEventListener('beforeunload', function(event) {
 window.addEventListener('load', function(event) {
    if (localStorage.getItem("editWindow")) {
        editWindow.value = localStorage.getItem("editWindow");
-   } 
+       processEdits(editWindow.value);
+   }
 });
+
+var turtleHeading = 0;
+var bufferCanvas;
+var transX;
+var transY;
+
+var startTime;
 
 Turtle.prototype.right = function(angle) {
     console.log(angle);
@@ -501,9 +502,10 @@ function displayEditWindow(flag) {
 saveEdits.addEventListener("click", function(event) {
     localStorage.setItem("editWindow", editWindow.value);
     displayEditWindow(false);
-    
-    console.log(editWindow.value);
-    
+    processEdits(editWindow.value);    
+});
+
+function processEdits(text) {    
     let tokens = [];
     //first element of the tokens array reserved for error messages
     tokens[0] = "no error";
@@ -525,18 +527,18 @@ saveEdits.addEventListener("click", function(event) {
         displayEditWindow(true);
         alert("Error: Saving procedures failed");
     }
-});
+}
 
 function saveProcedures(tokens) {
     console.log(tokens);
     let toIndex = tokens.findIndex(function(element) {
         //console.log(element);
-        return element === "to";
+        return element.toLowerCase() === "to";
     });
     console.log(toIndex);
     let endIndex = tokens.findIndex(function(element) {
         //console.log(element);
-        return element === "end";
+        return element.toLowerCase() === "end";
     });
     console.log(endIndex);
 
@@ -546,7 +548,7 @@ function saveProcedures(tokens) {
 
         tokens = tokens.slice(toIndex+1)
 
-        let procedureName = tokens[0];
+        let procedureName = tokens[0].toLowerCase();
 
         let firstNewLine = tokens.findIndex(function(element) {
             console.log(element);
@@ -1040,6 +1042,8 @@ function checkVariables(name) {
 }
 
 function checkProcedures(token) {
+    console.log(logoProceduresMap);
+    console.log(token);
     let procedure = logoProceduresMap.get(token.toLowerCase());
     if (procedure !== undefined) {
         let value = JSON.parse(JSON.stringify(procedure));
