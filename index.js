@@ -20,6 +20,19 @@ var transY;
 
 var startTime;
 
+window.addEventListener('beforeunload', function(event) {
+    if (editWindow.style["display"] === "inline-block") {
+        event.preventDefault();
+        event.returnValue = ""; 
+    } 
+});
+
+window.addEventListener('load', function(event) {
+   if (localStorage.getItem("editWindow")) {
+       editWindow.value = localStorage.getItem("editWindow");
+   } 
+});
+
 Turtle.prototype.right = function(angle) {
     console.log(angle);
     this.rightService(angle);
@@ -486,7 +499,7 @@ function displayEditWindow(flag) {
 }
 
 saveEdits.addEventListener("click", function(event) {
-    
+    localStorage.setItem("editWindow", editWindow.value);
     displayEditWindow(false);
     
     console.log(editWindow.value);
