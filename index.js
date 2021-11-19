@@ -922,20 +922,11 @@ function evaluateTokens(tokens) {
             evaluationStack[evaluationStack.length-1].push(tokens[0]);
             tokens = tokens.slice(1);
             console.log(tokens);
-        } else if (tokens[0] === "to" || tokens[0] === "edall") {
+        } else if (tokens[0].toLowerCase() === "edall") {
             console.log("new procedure definition");
-
-
             displayEditWindow(true);
-
-            //deal with procedure definitions
-
             tokens = tokens.slice(1);
             console.log(tokens);
-        //} else if (re.test(tokens[0])) {
-          //  console.log("infix operator");
-          //  tokens = tokens.slice(1);
-          //  console.log(tokens);
         } else {
             //console.log("check procedures");
             let newProc = checkProcedures(tokens[0]);
