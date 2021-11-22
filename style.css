@@ -1,28 +1,47 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+}
+
+*{
+    box-sizing: border-box;
+}
+
+#main_container {
+    height: 100vh;
+}
+
+#graphics_output {
+    width: 100%;
+    height: 65%;
+    border: 1px solid;
+}
+#buffer_canvas {
+	border: 1px solid;
+}
 textarea {
+    width: 100%;
+    height: 24%;
+    display: block;
 	resize: none;
 	font-family: monospace, monospace;
 	border: 1px solid;
 }
 
 input[type=text] {
+	width: 100%;
+	display: block;
 	font-family: monospace, monospace;
 	border: 1px solid;
 }
 
-#edit_label {
+#edit_container {
 	display: none;
 }
 
 #edit_window {
-	display: none;
+	height: 80vh;
 }
 
-#save_edits {
-	display: none;
-}
-
-
-
-canvas {
-	border: 1px solid;
-}
