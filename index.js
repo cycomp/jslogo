@@ -6,6 +6,9 @@ const editWindow = document.getElementById('edit_window');
 const saveEdits = document.getElementById("save_edits");
 const graphicsWindow = document.getElementById("graphics_output");
 const graphicsLabel = document.getElementById("graphics_output_label");
+const mainContainer =  document.getElementById('main_container');
+const editContainer = document.getElementById('edit_container');
+
 
 const commandInputLabel = document.getElementById('command_input_label');
 const commandInputWindow = document.getElementById('command_input');
@@ -167,7 +170,7 @@ function Turtle() {
         }
         //boundingRectangle[x, y, width, height]
         //ctx.strokeRect(minX, minY, maxX-minX, maxY-minY);
-        let boundingRectangle = [minX, minY, maxX-minX, maxY-minY];
+        let boundingRectangle = [minX-2, minY-2, 25, 25];
 
         return boundingRectangle
     }
@@ -220,14 +223,27 @@ var myTurtle = new Turtle();
 const mainCanvas = document.getElementById('graphics_output');
 if (mainCanvas.getContext) {
     var ctx = mainCanvas.getContext('2d');
+    resizeCanvasToDisplay();
+}
+
+function originToCentre() {
     transX = mainCanvas.width*0.5;
     transY = mainCanvas.height*0.5;
     ctx.translate(transX, transY);
-
     ctx.fillStyle = 'rgb(255,255,255)';
     ctx.fillRect(-mainCanvas.width*0.5, -mainCanvas.height*0.5, mainCanvas.width, mainCanvas.height);
-
     myTurtle.draw();
+}
+
+function resizeCanvasToDisplay() {
+    let width = mainCanvas.clientWidth;
+    let height = mainCanvas.clientHeight;
+
+    if (mainCanvas.width !== width || mainCanvas.height !== height) {
+        mainCanvas.width = width;
+        mainCanvas.height = height;
+        originToCentre()
+    }
 }
 
 function clearScreen() {
@@ -236,6 +252,7 @@ function clearScreen() {
 }
 
 function resetScreen() {
+    resizeCanvasToDisplay();
     clearScreen();
     myTurtle.reset();
     myTurtle.draw();
@@ -246,6 +263,7 @@ function resetScreen() {
 var text_history = [];
 
 const logoVariablesMap = new Map();
+const localVariablesStack = [];
 const logoProceduresMap = new Map();
 const jsProceduresMap = new Map();
 
@@ -273,6 +291,7 @@ logoVariablesMap.set("test", 42);
 logoProceduresMap.set("print", [1, null, "print"]);
 logoProceduresMap.set("random", [1, null, "random"]);
 logoProceduresMap.set("make", [2, null, "make"]);
+logoProceduresMap.set("localmake", [2, null, "localmake"]);
 logoProceduresMap.set("plus1", [1, null, "plus1"]);
 logoProceduresMap.set("sum", [2, null, "sum"]);
 logoProceduresMap.set("output", [1, null, "output"]);
@@ -307,7 +326,7 @@ logoProceduresMap.set("if", [2, null, "if"]);
 
 let forDetails = [];
 forDetails[0] = [':var', ':start', ':end', ':actions'];
-forDetails[1] = ['make', ':var', ':start', 'run', ':actions', 'make', '"start', ':start', '+', '1', 'if', ':start', '<', '(', ':end', '+', '1', ')', '[for :var :start :end :actions]'];
+forDetails[1] = ['localmake', ':var', ':start', 'run', ':actions', 'localmake', '"start', ':start', '+', '1', 'if', ':start', '<', '(', ':end', '+', '1', ')', '[for :var :start :end :actions]'];
 forDetails[2] = false;
 logoProceduresMap.set("for", [4, forDetails, null]);
 
@@ -457,6 +476,24 @@ jsProceduresMap.set("make", function(argArray) {
     logoVariablesMap.set(argArray[0], argArray[1]);
 });
 
+jsProceduresMap.set("localmake", function(argArray) {
+    console.log(argArray);
+
+    let localVariablesMap = new Map();
+    localVariablesMap.set(argArray[0], argArray[1]);
+
+    if (localVariablesStack[localVariablesStack.length-1] === undefined) {
+        localVariablesStack.push(localVariablesMap)
+    } else {
+        //merge with current local variables
+        let existingMap = localVariablesStack[localVariablesStack.length-1];
+        let newMap = new Map([...existingMap, ...localVariablesMap]);
+        localVariablesStack[localVariablesStack.length-1] = newMap;
+
+    }
+    console.log(localVariablesStack);
+});
+
 editWindow.addEventListener('keydown', function(event) {
     if (event.key === 'Tab') {
         console.log(event.key);
@@ -475,27 +512,11 @@ editWindow.addEventListener('keydown', function(event) {
 
 function displayEditWindow(flag) {
     if (flag === true) {
-        commandInputLabel.style.display = 'none';
-        commandInputWindow.style.display = 'none';
-        textOutputLabel.style.display = 'none';
-        textOutputWindow.style.display = 'none';
-        graphicsWindow.style.display = 'none';
-        graphicsLabel.style.display = 'none';
-
-        editLabel.style.display = 'inline-block';
-        editWindow.style.display = 'inline-block';
-        saveEdits.style.display = 'inline-block';
+        main_container.style.display = 'none';
+        editContainer.style.display = 'block';
     } else {
-        commandInputLabel.style.display = 'inline-block';
-        commandInputWindow.style.display = 'inline-block';
-        textOutputLabel.style.display = 'inline-block';
-        textOutputWindow.style.display = 'inline-block';
-        graphicsWindow.style.display = 'inline-block';
-        graphicsLabel.style.display = 'inline-block';
-
-        editLabel.style.display = 'none';
-        editWindow.style.display = 'none';
-        saveEdits.style.display = 'none';
+        main_container.style.display = 'block';
+        editContainer.style.display = 'none';
     }
 }
 
@@ -986,9 +1007,7 @@ function evaluateTokens(tokens) {
     }
     evaluationStack.length = 0;
     evaluationStack[0] = ["","",""];
-    console.log("finished");
-    console.log(startTime);
-    console.log(Date.now()-startTime);
+            
     return null;
 }
 
@@ -1010,14 +1029,20 @@ function execute(currentProc) {
         //logoVariablesMap.set(identifier, value);
 
         let numArgs = currentProc[0]
-
+        let localVariablesMap = new Map();
+                
         for (let i=0; i<numArgs; i++) {
-            logoVariablesMap.set(currentProc[1][0][i].slice(1), currentArgs[i]);
+            localVariablesMap.set(currentProc[1][0][i].slice(1), currentArgs[i]);
         }
+        localVariablesStack.push(localVariablesMap)
         
         //processInput(inputString)
         let instructionList=currentProc[1][1].toString();
         processInput(instructionList);
+        
+        //pop off and discard the top set of local variables
+        localVariablesStack.pop();
+                
     } else {
         let value = jsProceduresMap.get(currentProc[2])
         let returnValue = value(currentArgs);
@@ -1028,8 +1053,17 @@ function execute(currentProc) {
 
 function checkVariables(name) {
     console.log(name);
-    let value = logoVariablesMap.get(name);
-    console.log(value);
+    
+    //check local variables
+    let value;
+    let localVariablesMap = localVariablesStack[localVariablesStack.length-1]
+    if (localVariablesMap !== undefined) {
+        value = localVariablesMap.get(name);
+    }
+    //if not found check global variables
+    if (value === undefined) {
+        value = logoVariablesMap.get(name);   
+    }
 
     if (value !== undefined) {
         return value;
@@ -1063,6 +1097,7 @@ function updateOutput(text_history, text_output) {
         temp_text = temp_text + text_history[i] + "\n";
     }
     text_output.value = temp_text;
+    text_output.scrollTop = text_output.scrollHeight;
 }
 
 function tokenise(input, tokens) {
