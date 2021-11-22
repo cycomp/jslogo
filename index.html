@@ -4,37 +4,30 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Logo Interpreter</title>
+        <title>Robot Logo</title>
         <link rel="stylesheet" href="style.css">
     </head>
     
     <body>
-        <div id="clipboard"></div>
-        <h1>Logo Interpreter</h1>
-        <div>
+        <div id="main_container">
             <label id="graphics_output_label" for="graphics_output">Graphics Output:</label>
-            <canvas id="graphics_output" width = "550" height = "300"></canvas>
-        </div>
-        
-        <div>
+            <canvas id="graphics_output" width = "1" height = "1"></canvas>
             <label id="text_output_label" for="text_output">Text Output:</label>
-	        <textarea id="text_output" name="text_output" rows="20" cols="72" readonly="true"></textarea>
-        </div>
-        <div>
+	        <textarea id="text_output" name="text_output" readonly="true"></textarea>
             <label id="command_input_label"for="command_input">Input Commands:</label>
-	        <input type="text" id="command_input" name="command_input" size="72">
+	        <input type="text" id="command_input" name="command_input">
         </div>
+        <div id="clipboard"></div>
+        
 
-        <div>
+        <div id="edit_container">
 	        <label id="edit_label" for="edit_window">Edit Window:</label>
-            <textarea id="edit_window" name="edit_window" rows="20" cols="72"></textarea>
+            <textarea id="edit_window" name="edit_window"></textarea>
             <button id="save_edits" type="button">Save</button>
         </div>
 
-        <div>
-	<p>Look here for tutorials on using Logo:</p>
-	<a href="https://fmslogo.sourceforge.io/workshop/">https://fmslogo.sourceforge.io/workshop/</a>
-	<h2>Logo Quick Reference</h2>
+        <div id="reference_container">
+            <h2>Logo Quick Reference</h2>
             <table border="1">
                 <tr>
                     <th>Command</th>
@@ -74,6 +67,6 @@
                 </tr>                             
             </table>
         </div>
-    	<script src="index.js"></script>
+    	<script src="index19.js"></script>
   </body>
 </html>
